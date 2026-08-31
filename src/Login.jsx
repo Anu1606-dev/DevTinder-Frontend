@@ -1,19 +1,31 @@
 const Login = () => {
   return (
-    <div className="flex justify-center items-center h-screen bg-base-100">
-      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-96 border p-6 gap-2">
-        <legend className="fieldset-legend text-xl font-bold px-2">Login</legend>
+    <div className="flex justify-center items-center h-screen bg-linear-to-br from-slate-950 via-slate-900 to-indigo-950">
+      <fieldset className="fieldset bg-slate-800/70 backdrop-blur-md border border-slate-700/60 rounded-box w-96 p-6 shadow-2xl shadow-blue-500/10">
+        <legend className="fieldset-legend text-2xl font-bold px-3 text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
+          Login
+        </legend>
 
-        <label className="label">Email</label>
-        <input type="email" className="input w-full" placeholder="Email" />
+        <label className="label text-slate-300">Email</label>
+        <input
+          type="email"
+          className="input w-full bg-slate-900/70 border-slate-600 text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
+          placeholder="Email"
+        />
 
-        <label className="label">Password</label>
-        <input type="password" className="input w-full" placeholder="Password" />
+        <label className="label text-slate-300 mt-2">Password</label>
+        <input
+          type="password"
+          className="input w-full bg-slate-900/70 border-slate-600 text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
+          placeholder="Password"
+        />
 
-        <button className="btn btn-neutral w-full mt-4">Login</button>
+        <button className="btn mt-5 w-full border-none text-white bg-linear-to-r from-blue-600 via-blue-500 to-cyan-400 hover:brightness-110 transition shadow-lg shadow-blue-500/40">
+          Login
+        </button>
       </fieldset>
     </div>
   )
 }
 
-export default Login;
+export default Login
