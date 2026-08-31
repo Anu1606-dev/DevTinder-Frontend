@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import {useDispatch} from 'react-redux';
+import { addUser } from "./utils/userSlice";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("dhoni@gmail.com");
   const [password, setPassword] = useState("Dhoni@1234");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
@@ -13,14 +16,15 @@ const Login = () => {
       setLoading(true);
       console.log("Attempting login with:", { emailId, password });
 
-      const response = await axios.post(
+      const res = await axios.post(
         "http://localhost:7777/login",
         { emailId, password },
         { withCredentials: true }
       );
 
-      console.log("Login successful:", response.data);
-      // Handle successful login here (store token, redirect, etc.)
+      console.log("Login successful:", res.data);
+      dispatch(addUser(res.data));
+
     } catch (err) {
       console.error("Login error:", err.message);
       setError(err.response?.data?.message || err.message || "Login failed");
