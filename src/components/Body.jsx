@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Body = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
     try {
@@ -29,8 +31,10 @@ const Body = () => {
   };
 
   useEffect(() => {
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if(!userData) {
+      fetchUser();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
