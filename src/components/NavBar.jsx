@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
-// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
-import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);
@@ -24,9 +23,9 @@ const NavBar = () => {
     return (
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
-                <link to="/" className="btn btn-ghost text-xl">
+                <Link to="/" className="btn btn-ghost text-xl">
                     DevTinder🚀
-                </link>
+                </Link>
             </div>
 
             {user && (
@@ -44,10 +43,10 @@ const NavBar = () => {
                             tabIndex={-1}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-1 w-52 p-2 shadow">
                             <li>
-                                <link to="/profile" className="justify-between">
+                                <Link to="/profile" className="justify-between">
                                     Profile
                                     <span className="badge">New</span>
-                                </link>
+                                </Link>
                             </li>
                             <li><a>Settings</a></li>
                             <li>
