@@ -10,6 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("Dhoni@1234");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,8 +33,7 @@ const Login = () => {
       return navigate("/");
 
     } catch (err) {
-      console.error("Login error:", err.message);
-      setError(err.response?.data?.message || err.message || "Login failed");
+      setError(err?.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -71,6 +72,7 @@ const Login = () => {
           placeholder="Password"
         />
 
+        <p className="text-red-700">{error}</p>
         <button
           onClick={handleLogin}
           disabled={loading}
