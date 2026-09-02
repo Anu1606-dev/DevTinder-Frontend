@@ -16,8 +16,7 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
   const showActions = onIgnore || onInterested;
 
   return (
-    <div className="card w-80 bg-base-100 border border-base-300 rounded-2xl shadow-xl overflow-hidden">
-      {/* 3D tilt effect — scoped to the photo only, since it's non-interactive */}
+    <div className="card w-80 bg-base-100 border border-base-300 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
       <div className="hover-3d w-full">
         <div className="relative h-56 w-full">
           <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
@@ -30,7 +29,6 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
             {gender && <p className="text-xs text-white/70 capitalize">{gender}</p>}
           </div>
         </div>
-        {/* 8 empty divs required by daisyUI for the hover-tracking grid */}
         <div></div>
         <div></div>
         <div></div>
