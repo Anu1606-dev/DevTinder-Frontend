@@ -1,4 +1,34 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake;
+  themes: devtinder-light --default, synthwave;
+}
+
+@plugin "daisyui/theme" {
+  name: "devtinder-light";
+  default: true;
+  color-scheme: light;
+  --color-base-100: oklch(99% 0.005 320);
+  --color-base-200: oklch(96% 0.02 340);
+  --color-base-300: oklch(91% 0.04 340);
+  --color-base-content: oklch(25% 0.03 330);
+  --color-primary: oklch(62% 0.25 350);
+  --color-primary-content: oklch(99% 0.01 350);
+  --color-secondary: oklch(58% 0.24 300);
+  --color-secondary-content: oklch(99% 0.01 300);
+  --color-accent: oklch(75% 0.16 195);
+  --color-accent-content: oklch(20% 0.02 195);
+  --color-neutral: oklch(30% 0.05 330);
+  --color-neutral-content: oklch(96% 0.01 330);
+  --color-info: oklch(70% 0.15 230);
+  --color-info-content: oklch(15% 0.02 230);
+  --color-success: oklch(72% 0.18 150);
+  --color-success-content: oklch(15% 0.02 150);
+  --color-warning: oklch(80% 0.18 80);
+  --color-warning-content: oklch(15% 0.02 80);
+  --color-error: oklch(62% 0.24 25);
+  --color-error-content: oklch(99% 0.01 25);
+  --radius-selector: 1rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1rem;
+  --border: 2px;
 }

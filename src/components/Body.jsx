@@ -15,7 +15,7 @@ const Body = () => {
   const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
-    if(userData) return;
+    if (userData) return;
     try {
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
@@ -39,7 +39,9 @@ const Body = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   )

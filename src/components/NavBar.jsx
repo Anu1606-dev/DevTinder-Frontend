@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +10,17 @@ const NavBar = () => {
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "devtinder-light");
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
+    const toggleTheme = (e) => {
+        setTheme(e.target.checked ? "synthwave" : "nord");
+    };
 
     const handleLogout = async () => {
         try {
@@ -30,7 +42,6 @@ const NavBar = () => {
 
             {user && (
                 <div className="flex-none flex items-center gap-4">
-                    {/* Theme toggle — sits beside the avatar, always visible */}
                     <label className="toggle text-base-content">
                         <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
@@ -45,7 +56,13 @@ const NavBar = () => {
                                 <path d="m19.07 4.93-1.41 1.41"></path>
                             </g>
                         </svg>
-                        <input type="checkbox" value="synthwave" className="theme-controller" />
+                        <input
+                            type="checkbox"
+                            value="synthwave"
+                            className="theme-controller"
+                            checked={theme === "synthwave"}
+                            onChange={toggleTheme}
+                        />
                         <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>

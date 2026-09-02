@@ -26,14 +26,11 @@ const Feed = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // These currently just remove the card locally.
-  // Share your request.js backend route and I'll wire these to actually
-  // call the connection-request API (send interested/ignored).
   const handleIgnore = (userId) => dispatch(removeUserFromFeed(userId));
   const handleInterested = (userId) => dispatch(removeUserFromFeed(userId));
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] p-6 flex flex-wrap gap-6 justify-center items-start bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+    <div className="p-6 flex flex-wrap gap-6 justify-center items-start bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
       {feed && feed.length > 0 ? (
         feed.map((user) => (
           <UserCard
@@ -44,7 +41,7 @@ const Feed = () => {
           />
         ))
       ) : (
-        <div className="text-slate-400 mt-10">No profiles found.</div>
+        <div className="text-base-content/50 mt-10">No profiles found.</div>
       )}
     </div>
   );
