@@ -29,9 +29,33 @@ const NavBar = () => {
             </div>
 
             {user && (
-                <div className="flex-none gap-2">
-                    <div className="dropdown dropdown-bottom dropdown-end mx-5 flex items-center gap-2">
-                        <p className="px-4"> Welcome, {user.firstName}</p>
+                <div className="flex-none flex items-center gap-4">
+                    {/* Theme toggle — sits beside the avatar, always visible */}
+                    <label className="toggle text-base-content">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2"></path>
+                                <path d="M12 20v2"></path>
+                                <path d="m4.93 4.93 1.41 1.41"></path>
+                                <path d="m17.66 17.66 1.41 1.41"></path>
+                                <path d="M2 12h2"></path>
+                                <path d="M20 12h2"></path>
+                                <path d="m6.34 17.66-1.41 1.41"></path>
+                                <path d="m19.07 4.93-1.41 1.41"></path>
+                            </g>
+                        </svg>
+                        <input type="checkbox" value="synthwave" className="theme-controller" />
+                        <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                            </g>
+                        </svg>
+                    </label>
+
+                    <p>Welcome, {user.firstName}</p>
+
+                    <div className="dropdown dropdown-bottom dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
                                 <img alt="User Photo" src={user.photoUrl} />
@@ -48,32 +72,7 @@ const NavBar = () => {
                                 </Link>
                             </li>
                             <li><a>Settings</a></li>
-                            <li className="mt-1">
-                                <label className="toggle text-base-content flex justify-between items-center">
-                                    <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-                                            <circle cx="12" cy="12" r="4"></circle>
-                                            <path d="M12 2v2"></path>
-                                            <path d="M12 20v2"></path>
-                                            <path d="m4.93 4.93 1.41 1.41"></path>
-                                            <path d="m17.66 17.66 1.41 1.41"></path>
-                                            <path d="M2 12h2"></path>
-                                            <path d="M20 12h2"></path>
-                                            <path d="m6.34 17.66-1.41 1.41"></path>
-                                            <path d="m19.07 4.93-1.41 1.41"></path>
-                                        </g>
-                                    </svg>
-                                    <input type="checkbox" value="synthwave" className="theme-controller" />
-                                    <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-                                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                                        </g>
-                                    </svg>
-                                </label>
-                            </li>
-                            <li>
-                                <a onClick={handleLogout}>Logout</a>
-                            </li>
+                            <li><a onClick={handleLogout}>Logout</a></li>
                         </ul>
                     </div>
                 </div>
