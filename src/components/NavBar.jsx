@@ -21,10 +21,6 @@ const NavBar = () => {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
-    // Reads the system clock + localStorage — both external, impure sources —
-    // which is only safe inside an effect, never during render. This effect
-    // synchronizes React state with that external system, and schedules a
-    // timer to re-sync it again the moment the 5-minute window ends.
     useEffect(() => {
         const storedTimestamp = user ? localStorage.getItem("loginTimestamp") : null;
         const remaining = storedTimestamp
@@ -67,8 +63,18 @@ const NavBar = () => {
 
             {user && (
                 <div className="flex-none flex items-center gap-4">
-                    <label className="toggle toggle-primary text-base-content">
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className="text-white">
+                    <label
+                        className="toggle"
+                        style={{ "--input-color": "var(--color-primary)" }}
+                    >
+                        <input
+                            type="checkbox"
+                            value="synthwave"
+                            className="theme-controller"
+                            checked={theme === "synthwave"}
+                            onChange={toggleTheme}
+                        />
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="!text-white">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
@@ -81,14 +87,7 @@ const NavBar = () => {
                                 <path d="m19.07 4.93-1.41 1.41"></path>
                             </g>
                         </svg>
-                        <input
-                            type="checkbox"
-                            value="synthwave"
-                            className="theme-controller"
-                            checked={theme === "synthwave"}
-                            onChange={toggleTheme}
-                        />
-                        <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                        <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
                             </g>
