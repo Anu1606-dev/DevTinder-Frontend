@@ -17,16 +17,28 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
 
   return (
     <div className="card w-80 bg-base-100 border border-base-300 rounded-2xl shadow-xl overflow-hidden">
-      <div className="relative h-56 w-full">
-        <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-4">
-          <h2 className="text-2xl font-bold text-white drop-shadow">
-            {fullName}
-            {age ? <span className="font-normal text-white/80">, {age}</span> : null}
-          </h2>
-          {gender && <p className="text-xs text-white/70 capitalize">{gender}</p>}
+      {/* 3D tilt effect — scoped to the photo only, since it's non-interactive */}
+      <div className="hover-3d w-full">
+        <div className="relative h-56 w-full">
+          <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+          <div className="absolute bottom-0 left-0 p-4">
+            <h2 className="text-2xl font-bold text-white drop-shadow">
+              {fullName}
+              {age ? <span className="font-normal text-white/80">, {age}</span> : null}
+            </h2>
+            {gender && <p className="text-xs text-white/70 capitalize">{gender}</p>}
+          </div>
         </div>
+        {/* 8 empty divs required by daisyUI for the hover-tracking grid */}
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
 
       <div className="card-body p-4 space-y-3">
