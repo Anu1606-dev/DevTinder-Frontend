@@ -26,6 +26,7 @@ const Login = () => {
       );
 
       dispatch(addUser(res.data));
+      localStorage.setItem("loginTimestamp", Date.now().toString());
       return navigate("/");
 
     } catch (err) {

@@ -6,25 +6,50 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
 
+const FIVE_MINUTES = 5 * 60 * 1000;
+
 const NavBar = () => {
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "devtinder-light");
+    const [showWelcome, setShowWelcome] = useState(false);
 
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
     }, [theme]);
 
+    // Reads the system clock + localStorage — both external, impure sources —
+    // which is only safe inside an effect, never during render. This effect
+    // synchronizes React state with that external system, and schedules a
+    // timer to re-sync it again the moment the 5-minute window ends.
+    useEffect(() => {
+        const storedTimestamp = user ? localStorage.getItem("loginTimestamp") : null;
+        const remaining = storedTimestamp
+            ? FIVE_MINUTES - (Date.now() - parseInt(storedTimestamp, 10))
+            : 0;
+
+        if (remaining > 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing with localStorage/system clock (external, impure sources), not mirroring render-time state
+            setShowWelcome(true);
+            const timer = setTimeout(() => setShowWelcome(false), remaining);
+            return () => clearTimeout(timer);
+        }
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing with localStorage/system clock (external, impure sources), not mirroring render-time state
+        setShowWelcome(false);
+    }, [user]);
+
     const toggleTheme = (e) => {
-        setTheme(e.target.checked ? "synthwave" : "nord");
+        setTheme(e.target.checked ? "synthwave" : "devtinder-light");
     };
 
     const handleLogout = async () => {
         try {
             await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+            localStorage.removeItem("loginTimestamp");
             dispatch(removeUser());
             return navigate("/login");
         } catch (error) {
@@ -35,15 +60,15 @@ const NavBar = () => {
     return (
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
-                <Link to="/" className="btn btn-ghost text-xl">
+                <Link to="/" className="btn btn-ghost text-xl text-primary font-bold">
                     DevTinder🚀
                 </Link>
             </div>
 
             {user && (
                 <div className="flex-none flex items-center gap-4">
-                    <label className="toggle text-base-content">
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                    <label className="toggle toggle-primary text-base-content">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className="text-white">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
@@ -70,7 +95,9 @@ const NavBar = () => {
                         </svg>
                     </label>
 
-                    <p>Welcome, {user.firstName}</p>
+                    {showWelcome && (
+                        <p className="text-primary font-semibold">Welcome, {user.firstName}</p>
+                    )}
 
                     <div className="dropdown dropdown-bottom dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
@@ -83,13 +110,13 @@ const NavBar = () => {
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-1 w-52 p-2 shadow"
                         >
                             <li>
-                                <Link to="/profile" className="justify-between">
+                                <Link to="/profile" className="justify-between text-primary font-medium">
                                     Profile
                                     <span className="badge">New</span>
                                 </Link>
                             </li>
-                            <li><a>Settings</a></li>
-                            <li><a onClick={handleLogout}>Logout</a></li>
+                            <li><a className="text-primary font-medium">Settings</a></li>
+                            <li><a className="text-primary font-medium" onClick={handleLogout}>Logout</a></li>
                         </ul>
                     </div>
                 </div>

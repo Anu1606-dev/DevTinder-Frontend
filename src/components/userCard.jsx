@@ -32,7 +32,7 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
       <div className="card-body p-4 space-y-3">
         {about && <p className="text-sm text-base-content/70 line-clamp-2">{about}</p>}
 
-        {skillList.length > 0 && (
+        {skillList.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {skillList.map((skill, idx) => (
               <span key={idx} className="badge badge-primary badge-outline text-xs">
@@ -40,6 +40,8 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
               </span>
             ))}
           </div>
+        ) : (
+          <span className="badge badge-ghost text-xs italic">No skills added yet</span>
         )}
 
         {showActions && (
