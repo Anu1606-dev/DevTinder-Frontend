@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
+import devTinderLogo from "../assets/devtinder-logo.png";
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 
@@ -56,8 +57,8 @@ const NavBar = () => {
     return (
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
-                <Link to="/" className="btn btn-ghost text-xl text-primary font-bold">
-                    DevTinder🚀
+                <Link to="/" className="btn btn-ghost h-auto py-2">
+                    <img src={devTinderLogo} alt="DevTinder" className="h-8 w-auto" />
                 </Link>
             </div>
 
@@ -74,7 +75,7 @@ const NavBar = () => {
                             checked={theme === "synthwave"}
                             onChange={toggleTheme}
                         />
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="!text-white">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="text-white!">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
@@ -99,8 +100,12 @@ const NavBar = () => {
                     )}
 
                     <div className="dropdown dropdown-bottom dropdown-end">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost btn-circle avatar transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:shadow-primary/40"
+                        >
+                            <div className="w-10 rounded-full ring ring-primary/0 hover:ring-primary/60 transition-all duration-300">
                                 <img alt="User Photo" src={user.photoUrl} />
                             </div>
                         </div>

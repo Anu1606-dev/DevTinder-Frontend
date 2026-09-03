@@ -20,7 +20,7 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
       <div className="hover-3d w-full">
         <div className="relative h-56 w-full">
           <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
           <div className="absolute bottom-0 left-0 p-4">
             <h2 className="text-2xl font-bold text-white drop-shadow">
               {fullName}
@@ -67,7 +67,7 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
             </button>
             <button
               onClick={() => onInterested?.(_id)}
-              className="btn btn-circle btn-primary shadow-lg shadow-primary/30"
+              className="btn btn-circle btn-primary shadow-lg shadow-primary/30 transition-all duration-200 ease-out hover:scale-125 hover:-rotate-6 hover:shadow-xl hover:shadow-primary/60 active:scale-95"
               aria-label="Interested"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
