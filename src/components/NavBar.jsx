@@ -105,7 +105,7 @@ const NavBar = () => {
                     </label>
 
                     {showWelcome && (
-                        <p className="text-primary font-semibold">Welcome, {user.firstName}</p>
+                        <p className="hidden sm:block text-primary font-semibold">Welcome, {user.firstName}</p>
                     )}
 
                     <div className="dropdown dropdown-bottom dropdown-end">

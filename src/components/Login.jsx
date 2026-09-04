@@ -37,8 +37,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
-      <fieldset className="fieldset bg-base-100/80 backdrop-blur-md border border-base-300 rounded-box w-96 p-6 shadow-2xl shadow-primary/10">
+    <div className="flex justify-center items-center min-h-screen px-4 bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
+      <fieldset className="fieldset bg-base-100/80 backdrop-blur-md border border-base-300 rounded-box w-full max-w-sm p-6 shadow-2xl shadow-primary/10">
         <legend className="fieldset-legend text-2xl font-bold px-3 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
           Login
         </legend>

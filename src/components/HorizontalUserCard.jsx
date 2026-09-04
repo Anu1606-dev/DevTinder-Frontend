@@ -15,14 +15,14 @@ const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
   const showActions = onIgnore || onInterested;
 
   return (
-    <div className="flex items-center gap-4 bg-base-100 border border-base-300 rounded-2xl shadow-md p-4 w-full transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 bg-base-100 border border-base-300 rounded-2xl shadow-md p-4 w-full transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
       <img
         src={profileImage}
         alt={fullName}
-        className="w-20 h-20 rounded-full object-cover border-2 border-primary/30 shrink-0"
+        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-primary/30 shrink-0"
       />
 
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 text-center sm:text-left">
         <h3 className="text-lg font-bold text-base-content truncate">
           {fullName}
           {age ? <span className="font-normal text-base-content/60">, {age}</span> : null}
@@ -30,7 +30,7 @@ const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
         {gender && <p className="text-xs text-base-content/50 capitalize">{gender}</p>}
         {about && <p className="text-sm text-base-content/70 mt-1 line-clamp-2">{about}</p>}
         {skillList.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2">
+          <div className="flex flex-wrap gap-1 mt-2 justify-center sm:justify-start">
             {skillList.slice(0, 5).map((skill, idx) => (
               <span key={idx} className="badge badge-primary badge-outline badge-sm">
                 {skill}

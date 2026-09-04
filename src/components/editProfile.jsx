@@ -52,7 +52,7 @@ const EditProfile = ({ user }) => {
 
         <div className="flex flex-wrap lg:flex-nowrap justify-center gap-10">
           {/* Form — fixed-size card, only this scrolls internally */}
-          <div className="card bg-base-100 border border-base-300 w-96 shadow-xl">
+          <div className="card bg-base-100 border border-base-300 w-full max-w-sm shadow-xl">
             <div className="card-body max-h-[70vh] overflow-y-auto">
               <h2 className="card-title justify-center text-primary">Edit Profile</h2>
 

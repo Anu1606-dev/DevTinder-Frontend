@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addFeed, removeUserFromFeed } from "../utils/feedSlice";
-import UserCard from "./userCard";
+import SwipeCard from "./SwipeCard";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
@@ -26,9 +26,6 @@ const Feed = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // status here must be "ignored" or "interested" — matches your
-  // requestRouter's allowedStatus for /request/send, NOT the "accepted"/
-  // "rejected" vocabulary used later in /request/review.
   const sendRequest = async (status, toUserId) => {
     try {
       await axios.post(
@@ -42,22 +39,18 @@ const Feed = () => {
     }
   };
 
-  const handleIgnore = (userId) => sendRequest("ignored", userId);
-  const handleInterested = (userId) => sendRequest("interested", userId);
+  const visibleCards = feed ? feed.slice(0, 3) : [];
 
   return (
-    <div className="p-6 flex flex-wrap gap-6 justify-center items-start bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10">
       {feed && feed.length > 0 ? (
-        feed.map((user) => (
-          <UserCard
-            key={user?._id}
-            user={user}
-            onIgnore={handleIgnore}
-            onInterested={handleInterested}
-          />
-        ))
+        <div className="relative w-full max-w-sm h-[500px] sm:h-[560px]">
+          {visibleCards.map((user, index) => (
+            <SwipeCard key={user._id} user={user} stackIndex={index} onSwipe={sendRequest} />
+          ))}
+        </div>
       ) : (
-        <div className="text-base-content/50 mt-10">No profiles found.</div>
+        <div className="text-base-content/50 text-center">No profiles found.</div>
       )}
     </div>
   );
