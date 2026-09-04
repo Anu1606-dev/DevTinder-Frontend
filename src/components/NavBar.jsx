@@ -84,7 +84,7 @@ const NavBar = () => {
                             checked={theme === "synthwave"}
                             onChange={toggleTheme}
                         />
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="!text-white">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="text-white!">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
@@ -127,6 +127,9 @@ const NavBar = () => {
                                     Profile
                                     <span className="badge">New</span>
                                 </Link>
+                            </li>
+                            <li>
+                                <Link to="/requests" className="text-primary font-medium">Requests</Link>
                             </li>
                             <li>
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
