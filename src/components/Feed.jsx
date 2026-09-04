@@ -43,9 +43,9 @@ const Feed = () => {
   const visibleCards = feed ? feed.slice(0, 3) : [];
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
       {feed && feed.length > 0 ? (
-        <div className="relative w-full max-w-sm h-[500px] sm:h-[560px]">
+        <div className="relative w-full max-w-sm h-125 sm:h-140">
           <AnimatePresence>
             {visibleCards.map((user, index) => (
               <SwipeCard key={user._id} user={user} stackIndex={index} onSwipe={sendRequest} />
