@@ -2,12 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { addUser } from "../utils/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmailId] = useState("dhoni@gmail.com");
+  const [password, setPassword] = useState("Dhoni@1234");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4 bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
+    <div className="flex justify-center items-center h-screen px-4 bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
       <fieldset className="fieldset bg-base-100/80 backdrop-blur-md border border-base-300 rounded-box w-full max-w-sm p-6 shadow-2xl shadow-primary/10">
         <legend className="fieldset-legend text-2xl font-bold px-3 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
           Login
@@ -76,6 +76,11 @@ const Login = () => {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        <p className="text-center text-sm text-base-content/60 mt-4">
+          New here?{" "}
+          <Link to="/signup" className="text-primary font-medium">Create an account</Link>
+        </p>
       </fieldset>
     </div>
   );

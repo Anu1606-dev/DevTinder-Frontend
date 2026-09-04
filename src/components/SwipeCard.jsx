@@ -86,7 +86,7 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
             className="h-full w-full object-cover pointer-events-none"
             draggable={false}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
           <div className="absolute bottom-0 left-0 p-4">
             <h2 className="text-2xl font-bold text-white drop-shadow">
               {fullName}
