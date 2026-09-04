@@ -26,8 +26,24 @@ const Feed = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleIgnore = (userId) => dispatch(removeUserFromFeed(userId));
-  const handleInterested = (userId) => dispatch(removeUserFromFeed(userId));
+  // status here must be "ignored" or "interested" — matches your
+  // requestRouter's allowedStatus for /request/send, NOT the "accepted"/
+  // "rejected" vocabulary used later in /request/review.
+  const sendRequest = async (status, toUserId) => {
+    try {
+      await axios.post(
+        BASE_URL + `/request/send/${status}/${toUserId}`,
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeUserFromFeed(toUserId));
+    } catch (error) {
+      console.error("Error sending request:", error);
+    }
+  };
+
+  const handleIgnore = (userId) => sendRequest("ignored", userId);
+  const handleInterested = (userId) => sendRequest("interested", userId);
 
   return (
     <div className="p-6 flex flex-wrap gap-6 justify-center items-start bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
