@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const STACK_STYLES = [
   { scale: 1, y: 0, opacity: 1 },
@@ -7,21 +7,24 @@ const STACK_STYLES = [
   { scale: 0.9, y: 28, opacity: 0.6 },
 ];
 
-const SwipeCard = ({ user, stackIndex, onSwipe }) => {
-  const controls = useAnimation();
-  const [dragX, setDragX] = useState(0);
-  const isFront = stackIndex === 0;
+const cardVariants = {
+  animate: ({ stackIndex }) => ({
+    x: 0,
+    rotate: 0,
+    ...(STACK_STYLES[stackIndex] ?? STACK_STYLES[2]),
+  }),
+  exit: ({ direction }) => ({
+    x: direction * 600,
+    rotate: direction * 25,
+    opacity: 0,
+    transition: { duration: 0.35, ease: "easeOut" },
+  }),
+};
 
-  useEffect(() => {
-    const target = STACK_STYLES[stackIndex] || STACK_STYLES[STACK_STYLES.length - 1];
-    controls.start({
-      x: 0,
-      rotate: 0,
-      ...target,
-      transition: { type: "spring", stiffness: 300, damping: 26 },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stackIndex]);
+const SwipeCard = ({ user, stackIndex, onSwipe }) => {
+  const [dragX, setDragX] = useState(0);
+  const [exitDirection, setExitDirection] = useState(0);
+  const isFront = stackIndex === 0;
 
   if (!user) return null;
   const { firstName, lastName, photoUrl, about, age, gender, skills } = user;
@@ -34,33 +37,23 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
     ? skills.split(",").map((s) => s.trim()).filter(Boolean)
     : [];
 
-  // Animates the card fully off-screen, THEN tells Feed.jsx to actually
-  // send the request + remove it from Redux — so the exit always finishes
-  // playing before the card disappears from the list.
-  const fly = async (direction) => {
-    await controls.start({
-      x: direction * 600,
-      rotate: direction * 25,
-      opacity: 0,
-      transition: { duration: 0.35, ease: "easeOut" },
-    });
+  // Records which way it should fly, then immediately tells Feed.jsx to
+  // remove it from Redux. AnimatePresence (in Feed.jsx) takes it from here —
+  // it keeps this card mounted just long enough to play the "exit" variant
+  // above, then removes it. No manual timing coordination needed.
+  const triggerExit = (direction) => {
+    setExitDirection(direction);
     onSwipe(direction === 1 ? "interested" : "ignored", user._id);
   };
 
   const handleDragEnd = (e, info) => {
     const threshold = 120;
     if (info.offset.x > threshold) {
-      fly(1);
+      triggerExit(1);
     } else if (info.offset.x < -threshold) {
-      fly(-1);
+      triggerExit(-1);
     } else {
       setDragX(0);
-      controls.start({
-        x: 0,
-        rotate: 0,
-        ...STACK_STYLES[0],
-        transition: { type: "spring", stiffness: 300, damping: 22 },
-      });
     }
   };
 
@@ -71,8 +64,12 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
     <motion.div
       className="absolute inset-0"
       style={{ zIndex: 30 - stackIndex }}
-      animate={controls}
-      initial={STACK_STYLES[stackIndex] || STACK_STYLES[STACK_STYLES.length - 1]}
+      custom={{ stackIndex, direction: exitDirection }}
+      variants={cardVariants}
+      initial={STACK_STYLES[stackIndex] ?? STACK_STYLES[2]}
+      animate="animate"
+      exit="exit"
+      transition={{ type: "spring", stiffness: 300, damping: 26 }}
       drag={isFront ? "x" : false}
       dragElastic={0.9}
       onDrag={(e, info) => isFront && setDragX(info.offset.x)}
@@ -131,7 +128,7 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
           {isFront && (
             <div className="flex justify-center gap-6 mt-auto pt-3">
               <button
-                onClick={() => fly(-1)}
+                onClick={() => triggerExit(-1)}
                 className="btn btn-circle btn-outline btn-error"
                 aria-label="Ignore"
               >
@@ -140,7 +137,7 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
                 </svg>
               </button>
               <button
-                onClick={() => fly(1)}
+                onClick={() => triggerExit(1)}
                 className="btn btn-circle btn-primary shadow-lg shadow-primary/30 transition-all duration-200 ease-out hover:scale-125 hover:-rotate-6 active:scale-95"
                 aria-label="Interested"
               >
