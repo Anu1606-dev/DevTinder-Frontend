@@ -5,9 +5,12 @@ import { BASE_URL } from "../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
+import { removeFeed } from "../utils/feedSlice";
+import { clearConnections } from "../utils/connectionSlice";
+import { clearRequests } from "../utils/requestSlice";
 import devTinderLogo from "../assets/devtinder-logo.png";
 
-const FIVE_MINUTES = 5 * 60 * 1000;
+const FIVE_MINUTES = 2 * 60 * 1000;
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);
@@ -48,6 +51,9 @@ const NavBar = () => {
             await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
             localStorage.removeItem("loginTimestamp");
             dispatch(removeUser());
+            dispatch(removeFeed());
+            dispatch(clearConnections());
+            dispatch(clearRequests());
             return navigate("/login");
         } catch (error) {
             console.error("Error logging out:", error);
@@ -57,8 +63,11 @@ const NavBar = () => {
     return (
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
-                <Link to="/" className="btn btn-ghost h-auto py-2">
-                    <img src={devTinderLogo} alt="DevTinder" className="h-8 w-auto" />
+                <Link
+                    to="/"
+                    className="flex items-center px-3 py-2 rounded-lg transition-colors duration-200 hover:font-black/5  active:bg-black/10 "
+                >
+                    <img src={devTinderLogo} alt="DevTinder" className="h-10 w-auto" />
                 </Link>
             </div>
 
@@ -75,7 +84,7 @@ const NavBar = () => {
                             checked={theme === "synthwave"}
                             onChange={toggleTheme}
                         />
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="text-white!">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="!text-white">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
