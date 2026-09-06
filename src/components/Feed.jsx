@@ -45,9 +45,9 @@ const Feed = () => {
   const isEmpty = Array.isArray(feed) && feed.length === 0;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-linear-to-br from-primary/10 via-base-100 to-secondary/10">
       {isLoading && (
-        <div className="w-full max-w-sm h-[500px] sm:h-[560px] flex flex-col gap-4">
+        <div className="w-full max-w-sm h-125 sm:h-140 flex flex-col gap-4">
           <div className="skeleton h-2/3 w-full rounded-2xl"></div>
           <div className="skeleton h-4 w-3/4 rounded"></div>
           <div className="skeleton h-4 w-1/2 rounded"></div>
@@ -71,7 +71,7 @@ const Feed = () => {
       )}
 
       {!isLoading && !isEmpty && (
-        <div className="relative w-full max-w-sm h-[500px] sm:h-[560px]">
+        <div className="relative w-full max-w-sm h-125 sm:h-140">
           <AnimatePresence>
             {visibleCards.map((user, index) => (
               <SwipeCard key={user._id} user={user} stackIndex={index} onSwipe={sendRequest} />
