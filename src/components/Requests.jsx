@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addRequests, removeRequest } from "../utils/requestSlice";
 import { addSingleConnection } from "../utils/connectionSlice";
+import { useToast } from "../hooks/useToast";
 import HorizontalUserCard from "./HorizontalUserCard";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
+  const { showToast } = useToast();
 
   const fetchRequests = async () => {
     if (requests) return;
@@ -35,11 +37,16 @@ const Requests = () => {
         { withCredentials: true }
       );
       dispatch(removeRequest(request._id));
+
       if (status === "accepted") {
         dispatch(addSingleConnection(request.fromUserId));
+        showToast("success", `You're now connected with ${request.fromUserId.firstName}!`);
+      } else {
+        showToast("info", `Request from ${request.fromUserId.firstName} declined.`);
       }
     } catch (error) {
       console.error("Error reviewing request:", error);
+      showToast("error", "Something went wrong. Please try again.");
     }
   };
 

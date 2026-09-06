@@ -9,6 +9,8 @@ import { removeFeed } from "../utils/feedSlice";
 import { clearConnections } from "../utils/connectionSlice";
 import { clearRequests } from "../utils/requestSlice";
 import devTinderLogo from "../assets/devtinder-logo.png";
+import { useToast } from "../hooks/useToast";
+
 
 const FIVE_MINUTES = 2 * 60 * 1000;
 
@@ -16,6 +18,7 @@ const NavBar = () => {
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { showToast } = useToast();
 
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "devtinder-light");
     const [showWelcome, setShowWelcome] = useState(false);
@@ -38,7 +41,6 @@ const NavBar = () => {
             return () => clearTimeout(timer);
         }
 
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing with localStorage/system clock (external, impure sources), not mirroring render-time state
         setShowWelcome(false);
     }, [user]);
 
@@ -54,9 +56,11 @@ const NavBar = () => {
             dispatch(removeFeed());
             dispatch(clearConnections());
             dispatch(clearRequests());
+            showToast("success", "Logged out successfully.");
             return navigate("/login");
         } catch (error) {
             console.error("Error logging out:", error);
+            showToast("error", "Error logging out. Please try again.");
         }
     };
 

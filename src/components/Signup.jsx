@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../utils/constants";
+import { useToast } from "../hooks/useToast";
 
 const DEFAULT_PHOTO_URL = "https://img.icons8.com/nolan/1200/user-default.jpg";
 
@@ -28,17 +29,12 @@ const Signup = () => {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const hideTimeoutRef = useRef(null);
+  const { showToast } = useToast();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const showToast = (type, message) => {
-    setToast({ type, message });
-    setTimeout(() => setToast(null), 3500);
-  };
 
   const revealPasswordBriefly = () => {
     setShowPassword(true);
@@ -197,14 +193,6 @@ const Signup = () => {
           <Link to="/login" className="text-primary font-medium">Login</Link>
         </p>
       </fieldset>
-
-      {toast && (
-        <div className="toast toast-top toast-center z-50">
-          <div className={`alert ${toast.type === "success" ? "alert-success" : "alert-error"}`}>
-            <span>{toast.message}</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
