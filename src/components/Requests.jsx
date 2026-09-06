@@ -35,8 +35,6 @@ const Requests = () => {
         { withCredentials: true }
       );
       dispatch(removeRequest(request._id));
-      // Accepted? We already have this person's full profile from the
-      // populated request — push it straight into Connections, no refetch needed.
       if (status === "accepted") {
         dispatch(addSingleConnection(request.fromUserId));
       }
@@ -45,10 +43,27 @@ const Requests = () => {
     }
   };
 
+  const isLoading = requests === null;
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-primary mb-6">Connection Requests</h2>
-      {requests && requests.length > 0 ? (
+
+      {isLoading && (
+        <div className="flex flex-col gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-4 p-4 border border-base-300 rounded-2xl">
+              <div className="skeleton h-20 w-20 rounded-full shrink-0"></div>
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="skeleton h-4 w-1/3 rounded"></div>
+                <div className="skeleton h-3 w-2/3 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!isLoading && requests && requests.length > 0 && (
         <div className="flex flex-col gap-4">
           {requests.map((req) => (
             <HorizontalUserCard
@@ -59,8 +74,16 @@ const Requests = () => {
             />
           ))}
         </div>
-      ) : (
-        <p className="text-base-content/50">No pending requests right now.</p>
+      )}
+
+      {!isLoading && requests && requests.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-5xl mb-4">📭</div>
+          <h3 className="text-lg font-bold text-base-content mb-2">No pending requests</h3>
+          <p className="text-base-content/60">
+            When someone's interested in connecting, you'll see them here.
+          </p>
+        </div>
       )}
     </div>
   );
