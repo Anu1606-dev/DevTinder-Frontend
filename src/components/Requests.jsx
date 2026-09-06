@@ -1,16 +1,19 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addRequests, removeRequest } from "../utils/requestSlice";
 import { addSingleConnection } from "../utils/connectionSlice";
 import { useToast } from "../hooks/useToast";
 import HorizontalUserCard from "./HorizontalUserCard";
+import ConfirmModal from "./ConfirmModal";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
   const { showToast } = useToast();
+  const rejectModalRef = useRef(null);
+  const [pendingReject, setPendingReject] = useState(null);
 
   const fetchRequests = async () => {
     if (requests) return;
@@ -50,6 +53,11 @@ const Requests = () => {
     }
   };
 
+  const askRejectConfirmation = (request) => {
+    setPendingReject(request);
+    rejectModalRef.current.open();
+  };
+
   const isLoading = requests === null;
 
   return (
@@ -76,7 +84,7 @@ const Requests = () => {
             <HorizontalUserCard
               key={req._id}
               user={req.fromUserId}
-              onIgnore={() => reviewRequest("rejected", req)}
+              onIgnore={() => askRejectConfirmation(req)}
               onInterested={() => reviewRequest("accepted", req)}
             />
           ))}
@@ -92,6 +100,19 @@ const Requests = () => {
           </p>
         </div>
       )}
+
+      <ConfirmModal
+        ref={rejectModalRef}
+        title="Reject this request?"
+        message={
+          pendingReject
+            ? `Are you sure you want to reject ${pendingReject.fromUserId.firstName}'s request?`
+            : ""
+        }
+        confirmText="Reject"
+        confirmVariant="btn-error"
+        onConfirm={() => pendingReject && reviewRequest("rejected", pendingReject)}
+      />
     </div>
   );
 };

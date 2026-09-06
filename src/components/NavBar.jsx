@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,17 +8,18 @@ import { removeUser } from "../utils/userSlice";
 import { removeFeed } from "../utils/feedSlice";
 import { clearConnections } from "../utils/connectionSlice";
 import { clearRequests } from "../utils/requestSlice";
-import devTinderLogo from "../assets/devtinder-logo.png";
 import { useToast } from "../hooks/useToast";
+import ConfirmModal from "./ConfirmModal";
+import devTinderLogo from "../assets/devtinder-logo.png";
 
-
-const FIVE_MINUTES = 2 * 60 * 1000;
+const FIVE_MINUTES = 5 * 60 * 1000;
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { showToast } = useToast();
+    const logoutModalRef = useRef(null);
 
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "devtinder-light");
     const [showWelcome, setShowWelcome] = useState(false);
@@ -69,9 +70,9 @@ const NavBar = () => {
             <div className="flex-1">
                 <Link
                     to="/"
-                    className="flex items-center px-3 py-2 rounded-lg transition-colors duration-200 hover:font-black/5  active:bg-black/10 "
+                    className="flex items-center px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-black/5 active:bg-black/10"
                 >
-                    <img src={devTinderLogo} alt="DevTinder" className="h-10 w-auto" />
+                    <img src={devTinderLogo} alt="DevTinder" className="h-8 w-auto" />
                 </Link>
             </div>
 
@@ -138,11 +139,27 @@ const NavBar = () => {
                             <li>
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
                             </li>
-                            <li><a className="text-primary font-medium" onClick={handleLogout}>Logout</a></li>
+                            <li>
+                                <a
+                                    className="text-primary font-medium"
+                                    onClick={() => logoutModalRef.current.open()}
+                                >
+                                    Logout
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                ref={logoutModalRef}
+                title="Log out?"
+                message="Are you sure you want to log out of DevTinder?"
+                confirmText="Log Out"
+                confirmVariant="btn-error"
+                onConfirm={handleLogout}
+            />
         </div>
     );
 };

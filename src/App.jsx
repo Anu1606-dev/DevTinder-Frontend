@@ -8,6 +8,7 @@ import appStore from './utils/appStore';
 import Feed from './components/Feed';
 import Connections from './components/connections';
 import Requests from './components/Requests';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </Provider>
