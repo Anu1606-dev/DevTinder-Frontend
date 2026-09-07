@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../utils/userSlice";
 import { removeFeed } from "../utils/feedSlice";
+import { resetFeedMeta } from "../utils/feedMetaSlice";
 import { clearConnections } from "../utils/connectionSlice";
 import { clearRequests } from "../utils/requestSlice";
 import { useToast } from "../hooks/useToast";
@@ -55,6 +56,7 @@ const NavBar = () => {
             localStorage.removeItem("loginTimestamp");
             dispatch(removeUser());
             dispatch(removeFeed());
+            dispatch(resetFeedMeta());
             dispatch(clearConnections());
             dispatch(clearRequests());
             showToast("success", "Logged out successfully.");
@@ -89,7 +91,7 @@ const NavBar = () => {
                             checked={theme === "synthwave"}
                             onChange={toggleTheme}
                         />
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="text-white!">
+                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="!text-white">
                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
