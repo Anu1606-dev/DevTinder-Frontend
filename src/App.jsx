@@ -11,25 +11,30 @@ import Requests from './components/Requests';
 import NotFound from './components/NotFound';
 import Premium from "./components/Premium";
 import Chat from "./components/Chat";
+import ChatList from "./components/ChatList"; 
+import { SocketProvider } from "./contexts/SocketProvider";
 
 function App() {
   return (
     <Provider store={appStore}>
-      <BrowserRouter basename="/">
-        <Routes>
-          <Route path="/" element={<Body />}>
-            <Route path="/" element={<Feed />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/connections" element={<Connections />} />
-            <Route path="/requests" element={<Requests />} />
-            <Route path="/premium" element={<Premium />} />
-            <Route path="/chat/:targetUserId" element={<Chat />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <SocketProvider> {/* ← ADDED */}
+        <BrowserRouter basename="/">
+          <Routes>
+            <Route path="/" element={<Body />}>
+              <Route path="/" element={<Feed />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/connections" element={<Connections />} />
+              <Route path="/requests" element={<Requests />} />
+              <Route path="/premium" element={<Premium />} />
+              <Route path="/chat/:targetUserId" element={<Chat />} />
+              <Route path="/chatlist" element={<ChatList />} /> {/* ← ADDED */}
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </SocketProvider> {/* ← ADDED */}
     </Provider>
   );
 }

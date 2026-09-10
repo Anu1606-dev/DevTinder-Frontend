@@ -4,6 +4,7 @@ import feedReducer from './feedSlice';
 import feedMetaReducer from './feedMetaSlice';
 import connectionReducer from './connectionSlice';
 import requestReducer from './requestSlice';
+import chatReducer from './chatSlice'; // ← ADDED
 
 const appStore = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const appStore = configureStore({
     feedMeta: feedMetaReducer,
     connections: connectionReducer,
     requests: requestReducer,
+    chat: chatReducer, // ← ADDED
   },
 });
 

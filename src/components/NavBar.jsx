@@ -9,6 +9,7 @@ import { removeFeed } from "../utils/feedSlice";
 import { resetFeedMeta } from "../utils/feedMetaSlice";
 import { clearConnections } from "../utils/connectionSlice";
 import { clearRequests } from "../utils/requestSlice";
+import { resetChat } from "../utils/chatSlice";
 import { useToast } from "../hooks/useToast";
 import ConfirmModal from "./ConfirmModal";
 import devTinderLogo from "../assets/devtinder-logo.png";
@@ -17,6 +18,8 @@ const FIVE_MINUTES = 5 * 60 * 1000;
 
 const NavBar = () => {
     const user = useSelector((store) => store.user);
+    const unreadCounts = useSelector((store) => store.chat.unreadCounts);
+    const totalUnread = Object.values(unreadCounts).reduce((sum, c) => sum + c, 0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { showToast } = useToast();
@@ -59,6 +62,7 @@ const NavBar = () => {
             dispatch(resetFeedMeta());
             dispatch(clearConnections());
             dispatch(clearRequests());
+            dispatch(resetChat());
             showToast("success", "Logged out successfully.");
             return navigate("/login");
         } catch (error) {
@@ -80,8 +84,15 @@ const NavBar = () => {
 
             {user && (
                 <div className="flex-none flex items-center gap-4">
-                    <Link to="/premium" className="btn btn-primary btn-sm">
-                        Upgrade
+                    <Link to="/chatlist" className="btn btn-ghost btn-circle indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5">
+                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                            </g>
+                        </svg>
+                        {totalUnread > 0 && (
+                            <span className="badge badge-sm badge-primary indicator-item">{totalUnread}</span>
+                        )}
                     </Link>
 
                     <label
@@ -146,12 +157,15 @@ const NavBar = () => {
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
                             </li>
                             <li>
-                                <a
+                                <button
                                     className="text-primary font-medium"
                                     onClick={() => logoutModalRef.current.open()}
                                 >
                                     Logout
-                                </a>
+                                </button>
+                            </li>
+                            <li>
+                                <Link to="/premium" className="text-primary font-medium">Upgrade</Link>
                             </li>
                         </ul>
                     </div>

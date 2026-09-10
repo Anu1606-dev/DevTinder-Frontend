@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
   if (!user) return null;
 
@@ -48,6 +50,14 @@ const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
           <button onClick={() => onInterested?.(_id)} className="btn btn-primary btn-sm">
             Accept
           </button>
+        </div>
+      )}
+
+      {!showActions && (
+        <div className="flex gap-2 shrink-0">
+          <Link to={`/chat/${_id}`} className="btn btn-primary btn-sm">
+            Chat
+          </Link>
         </div>
       )}
     </div>

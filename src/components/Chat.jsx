@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { createSocketConnection } from "../utils/socket";
+import { useSocket } from "../hooks/useSocket";
+import { setActiveChatUserId } from "../utils/chatSlice";
 
 const Chat = () => {
   const { targetUserId } = useParams();
   const user = useSelector((store) => store.user);
   const userId = user?._id;
+  const socket = useSocket();
+  const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const socketRef = useRef(null);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -34,31 +36,37 @@ const Chat = () => {
     fetchChatHistory();
   }, [targetUserId]);
 
+  // Mark this chat as "actively open" so incoming messages here don't
+  // add to the unread badge count — and clear any existing unread count
   useEffect(() => {
-    if (!userId) return;
+    dispatch(setActiveChatUserId(targetUserId));
+    return () => dispatch(setActiveChatUserId(null));
+  }, [targetUserId, dispatch]);
 
-    const socket = createSocketConnection();
-    socketRef.current = socket;
+  useEffect(() => {
+    if (!socket || !userId) return;
 
     socket.emit("joinChat", { targetUserId });
 
-    socket.on("messageReceived", ({ firstName, text, senderId }) => {
+    const handleMessageReceived = ({ firstName, text, senderId }) => {
       setMessages((prev) => [...prev, { firstName, text, senderId }]);
-    });
+    };
+
+    socket.on("messageReceived", handleMessageReceived);
 
     return () => {
-      socket.disconnect();
+      socket.off("messageReceived", handleMessageReceived);
     };
-  }, [userId, targetUserId]);
+  }, [socket, userId, targetUserId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !socket) return;
 
-    socketRef.current.emit("sendMessage", {
+    socket.emit("sendMessage", {
       firstName: user.firstName,
       targetUserId,
       text: newMessage,
@@ -71,10 +79,7 @@ const Chat = () => {
     <div className="flex flex-col h-[80vh] max-w-2xl mx-auto border border-base-300 rounded-lg mt-6">
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat ${msg.senderId === userId ? "chat-end" : "chat-start"}`}
-          >
+          <div key={index} className={`chat ${msg.senderId === userId ? "chat-end" : "chat-start"}`}>
             <div className="chat-header">{msg.firstName}</div>
             <div className="chat-bubble">{msg.text}</div>
           </div>
