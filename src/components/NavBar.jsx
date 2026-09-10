@@ -80,6 +80,10 @@ const NavBar = () => {
 
             {user && (
                 <div className="flex-none flex items-center gap-4">
+                    <Link to="/premium" className="btn btn-primary btn-sm">
+                        Upgrade
+                    </Link>
+
                     <label
                         className="toggle"
                         style={{ "--input-color": "var(--color-primary)" }}
@@ -140,9 +144,6 @@ const NavBar = () => {
                             </li>
                             <li>
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
-                            </li>
-                            <li>
-                                <Link to="/premium" className="text-primary font-medium">Premium</Link>
                             </li>
                             <li>
                                 <a
