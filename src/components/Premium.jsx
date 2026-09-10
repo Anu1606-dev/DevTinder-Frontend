@@ -25,8 +25,10 @@ const Premium = () => {
               { withCredentials: true }
             );
             console.log("Payment verified:", verifyRes.data);
+            alert("Payment successful! Welcome to Premium.");
           } catch (err) {
             console.error("Verification failed:", err);
+            alert("Payment verification failed. Contact support.");
           }
         },
         theme: { color: "#3399cc" },
@@ -36,11 +38,14 @@ const Premium = () => {
       rzp.open();
     } catch (err) {
       console.error("Order creation failed:", err);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <div className="flex justify-center mt-20">
+    <div className="flex flex-col items-center justify-center mt-20 gap-4">
+      <h1 className="text-2xl font-bold">Upgrade to Premium</h1>
+      <p className="text-gray-500">Unlock unlimited connections for ₹499</p>
       <button className="btn btn-primary" onClick={handleBuyClick}>
         Buy Premium
       </button>

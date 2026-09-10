@@ -142,6 +142,9 @@ const NavBar = () => {
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
                             </li>
                             <li>
+                                <Link to="/premium" className="text-primary font-medium">Premium</Link>
+                            </li>
+                            <li>
                                 <a
                                     className="text-primary font-medium"
                                     onClick={() => logoutModalRef.current.open()}
