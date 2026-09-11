@@ -21,8 +21,8 @@ const ContactUs = () => {
                     <span className="text-2xl">🐦</span>
                     <div>
                         <p className="font-semibold text-base-content">Twitter</p>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                            @yourhandle
+                        <a href="https://x.com/Anu35473" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                            @Anu35473
                         </a>
                     </div>
                 </div>
@@ -31,8 +31,18 @@ const ContactUs = () => {
                     <span className="text-2xl">💼</span>
                     <div>
                         <p className="font-semibold text-base-content">LinkedIn</p>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                            linkedin.com/in/yourprofile
+                        <a href="https://www.linkedin.com/in/anushka-sarkar-07b2502b9/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                            Anushka Sarkar
+                        </a>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-4 border border-base-300 rounded-xl">
+                    <span className="text-2xl">💻</span>
+                    <div>
+                        <p className="font-semibold text-base-content">GitHub</p>
+                        <a href="https://github.com/Anu1606-dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                            Anu1606-dev
                         </a>
                     </div>
                 </div>
