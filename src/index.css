@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: devtinder-light --default, synthwave;
+  themes:
+    devtinder-light --default,
+    synthwave;
 }
 
 @plugin "daisyui/theme" {
@@ -39,4 +41,24 @@
 
 body {
   font-family: var(--font-sans);
+}
+
+.input,
+.textarea,
+.select {
+  transition: all 0.25s ease;
+}
+
+.input:focus,
+.input:focus-within,
+.textarea:focus,
+.textarea:focus-within,
+.select:focus,
+.select:focus-within {
+  outline: none !important;
+  box-shadow:
+    0 0 0 3px color-mix(in oklab, var(--color-primary) 25%, transparent),
+    0 8px 20px color-mix(in oklab, var(--color-primary) 20%, transparent) !important;
+  transform: translateY(-1px) scale(1.01);
+  border-color: var(--color-primary) !important;
 }
