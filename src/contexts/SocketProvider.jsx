@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 import { createSocketConnection } from "../utils/socket";
-import { incrementUnread } from "../utils/chatSlice";
+import { incrementUnread, setUnreadCounts } from "../utils/chatSlice";
 import { SocketContext } from "./SocketContext";
 
 export const SocketProvider = ({ children }) => {
@@ -19,6 +21,22 @@ export const SocketProvider = ({ children }) => {
       }
       return;
     }
+
+    // ← ADDED: pull real unread counts from the DB on every login/page load,
+    // since Redux state alone doesn't survive a refresh
+    const hydrateUnreadCounts = async () => {
+      try {
+        const { data } = await axios.get(BASE_URL + "/chats", { withCredentials: true });
+        const counts = {};
+        data.data.forEach((chat) => {
+          if (chat.unreadCount > 0) counts[chat.targetUserId] = chat.unreadCount;
+        });
+        dispatch(setUnreadCounts(counts));
+      } catch (err) {
+        console.error("Failed to hydrate unread counts:", err);
+      }
+    };
+    hydrateUnreadCounts();
 
     const newSocket = createSocketConnection();
     socketRef.current = newSocket;

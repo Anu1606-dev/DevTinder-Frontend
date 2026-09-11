@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const chatSlice = createSlice({
   name: "chat",
   initialState: {
-    unreadCounts: {}, // { [userId]: count }
-    activeChatUserId: null, // whichever chat page is currently open, if any
+    unreadCounts: {},
+    activeChatUserId: null,
   },
   reducers: {
     setActiveChatUserId: (state, action) => {
@@ -15,8 +15,11 @@ const chatSlice = createSlice({
     },
     incrementUnread: (state, action) => {
       const fromUserId = action.payload;
-      if (state.activeChatUserId === fromUserId) return; // already viewing this chat
+      if (state.activeChatUserId === fromUserId) return;
       state.unreadCounts[fromUserId] = (state.unreadCounts[fromUserId] || 0) + 1;
+    },
+    setUnreadCounts: (state, action) => {
+      state.unreadCounts = action.payload; // ← ADDED: bulk hydration from the backend
     },
     resetChat: () => ({
       unreadCounts: {},
@@ -25,5 +28,5 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setActiveChatUserId, incrementUnread, resetChat } = chatSlice.actions;
+export const { setActiveChatUserId, incrementUnread, setUnreadCounts, resetChat } = chatSlice.actions;
 export default chatSlice.reducer;

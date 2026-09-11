@@ -7,6 +7,8 @@ import { BASE_URL } from "../utils/constants";
 const ChatList = () => {
   const [conversations, setConversations] = useState(null);
   const unreadCounts = useSelector((store) => store.chat.unreadCounts);
+  const user = useSelector((store) => store.user);
+  const userId = user?._id;
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -53,6 +55,11 @@ const ChatList = () => {
         <div className="flex flex-col gap-2">
           {conversations.map((chat) => {
             const unread = unreadCounts[chat.targetUserId] || 0;
+            const isOwnLastMessage = chat.lastMessageSenderId === userId;
+            const previewText = chat.lastMessageText
+              ? `${isOwnLastMessage ? "You: " : ""}${chat.lastMessageText}`
+              : "Say hi 👋";
+
             return (
               <Link
                 key={chat.targetUserId}
@@ -65,11 +72,11 @@ const ChatList = () => {
                   className="w-14 h-14 rounded-full object-cover shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <h3 className={`truncate ${unread > 0 ? "font-bold text-base-content" : "font-medium text-base-content/90"}`}>
+                  <h3 className="font-medium text-base-content/90 truncate">
                     {chat.firstName} {chat.lastName}
                   </h3>
-                  <p className={`text-sm truncate ${unread > 0 ? "font-semibold text-base-content" : "text-base-content/60"}`}>
-                    {chat.lastMessageText || "Say hi 👋"}
+                  <p className={`text-sm truncate ${unread > 0 ? "font-bold text-base-content" : "text-base-content/60"}`}>
+                    {previewText}
                   </p>
                 </div>
                 {unread > 0 && <span className="badge badge-primary badge-sm">{unread}</span>}
