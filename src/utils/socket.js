@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
-import { BASE_URL } from "./constants";
 
 export const createSocketConnection = () => {
-  return io(BASE_URL, { withCredentials: true });
+  return io(import.meta.env.VITE_SOCKET_URL || "http://localhost:7777", {
+    withCredentials: true,
+  });
 };
