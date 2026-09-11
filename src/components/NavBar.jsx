@@ -160,6 +160,9 @@ const NavBar = () => {
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
                             </li>
                             <li>
+                                <Link to="/contact" className="text-primary font-medium">Contact Us</Link>
+                            </li>
+                            <li>
                                 <button
                                     className="text-primary font-medium"
                                     onClick={() => logoutModalRef.current.open()}

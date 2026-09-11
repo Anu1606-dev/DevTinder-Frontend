@@ -13,6 +13,7 @@ import Premium from "./components/Premium";
 import Chat from "./components/Chat";
 import ChatList from "./components/ChatList"; 
 import { SocketProvider } from "./contexts/SocketProvider";
+import ContactUs from "./components/ContactUs";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
               <Route path="/requests" element={<Requests />} />
               <Route path="/premium" element={<Premium />} />
               <Route path="/chat/:targetUserId" element={<Chat />} />
-              <Route path="/chatlist" element={<ChatList />} /> {/* ← ADDED */}
+              <Route path="/chatlist" element={<ChatList />} />
+              <Route path="/contact" element={<ContactUs />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
