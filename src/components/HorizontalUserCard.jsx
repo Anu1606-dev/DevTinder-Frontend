@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
   if (!user) return null;
 
-  const { _id, firstName, lastName, photoUrl, about, age, gender, skills } = user;
+  const { _id, firstName, lastName, photoUrl, about, age, gender, skills, isGithubVerified } = user;
   const fullName = `${firstName || ""} ${lastName || ""}`.trim() || "Developer";
   const profileImage =
     photoUrl || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp";
@@ -25,9 +25,12 @@ const HorizontalUserCard = ({ user, onIgnore, onInterested }) => {
       />
 
       <div className="flex-1 min-w-0 text-center sm:text-left">
-        <h3 className="text-lg font-bold text-base-content truncate">
+        <h3 className="text-lg font-bold text-base-content truncate flex items-center gap-1 justify-center sm:justify-start">
           {fullName}
           {age ? <span className="font-normal text-base-content/60">, {age}</span> : null}
+          {isGithubVerified && (
+            <span className="badge badge-success badge-sm gap-1" title="GitHub Verified">✅</span>
+          )}
         </h3>
         {gender && <p className="text-xs text-base-content/50 capitalize">{gender}</p>}
         {about && <p className="text-sm text-base-content/70 mt-1 line-clamp-2">{about}</p>}

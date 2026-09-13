@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserCard from "./userCard";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
+import GithubConnectButton from "./GithubConnectButton";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -21,6 +22,20 @@ const EditProfile = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // ← ADDED: handle the redirect back from GitHub's OAuth flow
+  useEffect(() => {
+    const githubStatus = searchParams.get("github");
+    if (githubStatus === "connected") {
+      showToast("success", "GitHub account connected successfully!");
+      setSearchParams({}, { replace: true });
+    } else if (githubStatus === "error") {
+      showToast("error", "Failed to connect GitHub account. Please try again.");
+      setSearchParams({}, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const skillsArray = skills.split(",").map((s) => s.trim()).filter(Boolean);
 
@@ -55,6 +70,25 @@ const EditProfile = ({ user }) => {
         <div className="card bg-base-100 border border-base-300 w-full max-w-sm shadow-xl">
           <div className="card-body max-h-[70vh] overflow-y-auto">
             <h2 className="card-title justify-center text-primary">Edit Profile</h2>
+
+            {/* ← ADDED: Developer Verification section */}
+            <div className="border border-base-300 rounded-xl p-3 my-2 flex flex-col gap-2">
+              <span className="text-sm font-semibold text-base-content/70">Developer Verification</span>
+              <GithubConnectButton
+                isConnected={user.isGithubVerified}
+                githubUsername={user.github?.username}
+              />
+              {user.isGithubVerified && (
+                <div className="flex flex-wrap gap-1 mt-1">
+                  <span className="text-xs text-base-content/50 mr-1">
+                    {user.github?.publicRepos ?? 0} public repos ·
+                  </span>
+                  {user.github?.topLanguages?.map((lang, idx) => (
+                    <span key={idx} className="badge badge-outline badge-xs">{lang}</span>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <label className="form-control w-full my-2">
               <div className="label"><span className="label-text">First Name:</span></div>
