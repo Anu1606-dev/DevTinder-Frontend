@@ -7,7 +7,9 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
 import GithubConnectButton from "./GithubConnectButton";
-import SkillsSelector from "./SkillsSelector"; // ← ADDED
+import SkillsSelector from "./SkillsSelector";
+import ReferralCard from "./ReferralCard"; // ← ADDED
+import Badges from "./Badges"; // ← ADDED
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -16,7 +18,7 @@ const EditProfile = ({ user }) => {
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
   const [about, setAbout] = useState(user.about || "");
-  const [skills, setSkills] = useState(Array.isArray(user.skills) ? user.skills : []); // ← CHANGED: array, not comma-string
+  const [skills, setSkills] = useState(Array.isArray(user.skills) ? user.skills : []);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ const EditProfile = ({ user }) => {
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
-        { firstName, lastName, photoUrl, age, gender, about, skills }, // ← CHANGED: skills already an array
+        { firstName, lastName, photoUrl, age, gender, about, skills },
         { withCredentials: true }
       );
 
@@ -90,6 +92,10 @@ const EditProfile = ({ user }) => {
               )}
             </div>
 
+            {/* ← ADDED */}
+            <Badges />
+            <ReferralCard />
+
             <label className="form-control w-full my-2">
               <div className="label"><span className="label-text">First Name:</span></div>
               <input type="text" value={firstName} className="input input-bordered w-full" onChange={(e) => setFirstName(e.target.value)} />
@@ -120,7 +126,6 @@ const EditProfile = ({ user }) => {
               </select>
             </label>
 
-            {/* ← CHANGED: replaced the free-text input with SkillsSelector */}
             <label className="form-control w-full my-2">
               <div className="label"><span className="label-text">Skills:</span></div>
               <SkillsSelector value={skills} onChange={setSkills} />
@@ -143,7 +148,7 @@ const EditProfile = ({ user }) => {
 
         <div className="lg:sticky lg:top-24 self-start">
           <UserCard
-            user={{ firstName, lastName, photoUrl, age, gender, about, skills }} // ← CHANGED: skills already an array
+            user={{ firstName, lastName, photoUrl, age, gender, about, skills }}
             onIgnore={() => {}}
             onInterested={() => {}}
           />
