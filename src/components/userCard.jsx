@@ -7,7 +7,7 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
 
   const fullName = `${firstName || ""} ${lastName || ""}`.trim() || "Developer";
   const profileImage =
-    photoUrl || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp";
+    photoUrl || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
   const skillList = Array.isArray(skills)
     ? skills

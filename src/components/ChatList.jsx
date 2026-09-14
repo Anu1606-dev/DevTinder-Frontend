@@ -71,7 +71,7 @@ const ChatList = () => {
                 className="flex items-center gap-4 p-3 border border-base-300 rounded-xl hover:bg-base-200 transition-colors"
               >
                 <img
-                  src={chat.photoUrl || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
+                  src={chat.photoUrl || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
                   alt={chat.firstName}
                   className="w-14 h-14 rounded-full object-cover shrink-0"
                 />

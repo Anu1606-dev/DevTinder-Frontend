@@ -12,12 +12,14 @@ const AdminReports = () => {
       const { data } = await axios.get(BASE_URL + "/admin/reports", { withCredentials: true });
       setReports(data.data);
     } catch (err) {
+      console.error("Failed to fetch reports:", err); // ← FIXED: now uses err
       showToast("error", "Failed to load reports. Admin access required.");
       setReports([]);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetching admin reports on mount, an external data sync, not mirroring render-time state
     fetchReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -28,6 +30,7 @@ const AdminReports = () => {
       showToast("success", `Report marked as ${status}.`);
       setReports((prev) => prev.filter((r) => r._id !== reportId));
     } catch (err) {
+      console.error("Failed to update report:", err); // ← FIXED: now uses err
       showToast("error", "Failed to update report.");
     }
   };
