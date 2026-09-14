@@ -11,14 +11,14 @@ import Requests from './components/Requests';
 import NotFound from './components/NotFound';
 import Premium from "./components/Premium";
 import Chat from "./components/Chat";
-import ChatList from "./components/ChatList"; 
+import ChatList from "./components/ChatList";
+import AdminReports from "./components/AdminReports"; // ← ADDED
 import { SocketProvider } from "./contexts/SocketProvider";
-import ContactUs from "./components/ContactUs";
 
 function App() {
   return (
     <Provider store={appStore}>
-      <SocketProvider> {/* ← ADDED */}
+      <SocketProvider>
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
@@ -31,12 +31,12 @@ function App() {
               <Route path="/premium" element={<Premium />} />
               <Route path="/chat/:targetUserId" element={<Chat />} />
               <Route path="/chatlist" element={<ChatList />} />
-              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/admin/reports" element={<AdminReports />} /> {/* ← ADDED */}
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </SocketProvider> {/* ← ADDED */}
+      </SocketProvider>
     </Provider>
   );
 }

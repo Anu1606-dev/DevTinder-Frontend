@@ -159,6 +159,11 @@ const NavBar = () => {
                             <li>
                                 <Link to="/connections" className="text-primary font-medium">Connections</Link>
                             </li>
+                            {user.isAdmin && (
+                                <li>
+                                    <Link to="/admin/reports" className="text-error font-medium">🚩 Admin Reports</Link>
+                                </li>
+                            )}
                             <li>
                                 <Link to="/contact" className="text-primary font-medium">Contact Us</Link>
                             </li>
