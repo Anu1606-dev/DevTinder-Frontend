@@ -36,8 +36,8 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
   const skillList = Array.isArray(skills)
     ? skills
     : typeof skills === "string" && skills.length > 0
-    ? skills.split(",").map((s) => s.trim()).filter(Boolean)
-    : [];
+      ? skills.split(",").map((s) => s.trim()).filter(Boolean)
+      : [];
 
   // ← ADDED: cap displayed skills, same pattern as UserCard.jsx
   const visibleSkills = skillList.slice(0, MAX_VISIBLE_SKILLS);
@@ -90,10 +90,15 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
 
-          {/* ← ADDED: placed bottom-right to avoid colliding with LIKE/NOPE overlays (top-left/top-right) */}
           {typeof matchScore === "number" && matchScore > 0 && (
             <div className="absolute bottom-16 right-3 badge badge-primary gap-1 shadow-lg">
               🔧 {matchScore}% match
+            </div>
+          )}
+
+          {user.isBoosted && (
+            <div className="absolute bottom-16 left-3 badge badge-secondary gap-1 shadow-lg">
+              ⚡ Boosted
             </div>
           )}
 

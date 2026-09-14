@@ -14,6 +14,7 @@ import Chat from "./components/Chat";
 import ChatList from "./components/ChatList";
 import AdminReports from "./components/AdminReports"; // ← ADDED
 import { SocketProvider } from "./contexts/SocketProvider";
+import PremiumAnalytics from "./components/PremiumAnalytics";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
               <Route path="/premium" element={<Premium />} />
               <Route path="/chat/:targetUserId" element={<Chat />} />
               <Route path="/chatlist" element={<ChatList />} />
-              <Route path="/admin/reports" element={<AdminReports />} /> {/* ← ADDED */}
+              <Route path="/admin/reports" element={<AdminReports />} /> 
+              <Route path="/premium/analytics" element={<PremiumAnalytics />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
