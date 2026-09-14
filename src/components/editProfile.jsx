@@ -7,6 +7,7 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
 import GithubConnectButton from "./GithubConnectButton";
+import SkillsSelector from "./SkillsSelector"; // ← ADDED
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -15,40 +16,36 @@ const EditProfile = ({ user }) => {
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
   const [about, setAbout] = useState(user.about || "");
-  const [skills, setSkills] = useState(
-    Array.isArray(user.skills) ? user.skills.join(", ") : user.skills || ""
-  );
+  const [skills, setSkills] = useState(Array.isArray(user.skills) ? user.skills : []); // ← CHANGED: array, not comma-string
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
-  const hasHandledGithubRedirect = useRef(false); // ← ADDED
+  const hasHandledGithubRedirect = useRef(false);
 
   useEffect(() => {
-    if (hasHandledGithubRedirect.current) return; // ← ADDED: blocks the Strict Mode double-fire
+    if (hasHandledGithubRedirect.current) return;
 
     const githubStatus = searchParams.get("github");
     if (githubStatus === "connected") {
-      hasHandledGithubRedirect.current = true; // ← ADDED
+      hasHandledGithubRedirect.current = true;
       showToast("success", "GitHub account connected successfully!");
       setSearchParams({}, { replace: true });
     } else if (githubStatus === "error") {
-      hasHandledGithubRedirect.current = true; // ← ADDED
+      hasHandledGithubRedirect.current = true;
       showToast("error", "Failed to connect GitHub account. Please try again.");
       setSearchParams({}, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const skillsArray = skills.split(",").map((s) => s.trim()).filter(Boolean);
-
   const saveProfile = async () => {
     setError("");
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
-        { firstName, lastName, photoUrl, age, gender, about, skills: skillsArray },
+        { firstName, lastName, photoUrl, age, gender, about, skills }, // ← CHANGED: skills already an array
         { withCredentials: true }
       );
 
@@ -123,15 +120,10 @@ const EditProfile = ({ user }) => {
               </select>
             </label>
 
+            {/* ← CHANGED: replaced the free-text input with SkillsSelector */}
             <label className="form-control w-full my-2">
-              <div className="label"><span className="label-text">Skills (comma separated):</span></div>
-              <input
-                type="text"
-                value={skills}
-                placeholder="React, Node.js, MongoDB"
-                className="input input-bordered w-full"
-                onChange={(e) => setSkills(e.target.value)}
-              />
+              <div className="label"><span className="label-text">Skills:</span></div>
+              <SkillsSelector value={skills} onChange={setSkills} />
             </label>
 
             <label className="form-control w-full my-2">
@@ -151,7 +143,7 @@ const EditProfile = ({ user }) => {
 
         <div className="lg:sticky lg:top-24 self-start">
           <UserCard
-            user={{ firstName, lastName, photoUrl, age, gender, about, skills: skillsArray }}
+            user={{ firstName, lastName, photoUrl, age, gender, about, skills }} // ← CHANGED: skills already an array
             onIgnore={() => {}}
             onInterested={() => {}}
           />
