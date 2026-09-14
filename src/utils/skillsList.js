@@ -16,7 +16,13 @@ export const SKILLS_LIST = [
     // Design
     "UI/UX Design", "Figma", "Product Design", "Graphic Design",
     // Other professional
-    "Digital Marketing", "Product Management", "Project Management", "Technical Writing", "QA Testing", "Cybersecurity", "Blockchain", "Agile/Scrum", "SEO", "Content Writing", "SAP", "Salesforce", "Business Analysis", "Cloud Computing", "Virtual Reality (VR)", "Augmented Reality (AR)", "Game Development", "Embedded Systems", "Robotics", "IoT (Internet of Things)", "Big Data", "Data Visualization", "Ethical Hacking", "Penetration Testing", "Network Administration", "System Administration",
+    "Digital Marketing", "Product Management", "Project Management", "Technical Writing",
+    // Emerging & Specialized
+    "QA Testing", "Cybersecurity", "Blockchain", "Agile/Scrum", "SEO", "Content Writing", 
+    // Additional skills
+    "SAP", "Salesforce", "Business Analysis",
+    // Emerging technologies
+    "Cloud Computing", "Virtual Reality (VR)", "Augmented Reality (AR)", "Game Development", "Embedded Systems", "Robotics", "IoT (Internet of Things)", "Big Data", "Data Visualization", "Ethical Hacking", "Penetration Testing", "Network Administration", "System Administration",
     // Soft skills
     "Communication", "Teamwork", "Problem Solving", "Critical Thinking", "Time Management", "Adaptability", "Leadership", "Creativity", "Emotional Intelligence", "Conflict Resolution",
     // Miscellaneous (Non-Technical)
