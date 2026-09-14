@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+import { getSharedSkills } from "../utils/matching"; // ← ADDED
 
 const ChatList = () => {
   const [conversations, setConversations] = useState(null);
@@ -60,6 +61,9 @@ const ChatList = () => {
               ? `${isOwnLastMessage ? "You: " : ""}${chat.lastMessageText}`
               : "Say hi 👋";
 
+            // ← ADDED: compute shared skills client-side using the logged-in user's own skills
+            const sharedSkills = getSharedSkills(user?.skills || [], chat.skills || []);
+
             return (
               <Link
                 key={chat.targetUserId}
@@ -78,6 +82,12 @@ const ChatList = () => {
                   <p className={`text-sm truncate ${unread > 0 ? "font-bold text-base-content" : "text-base-content/60"}`}>
                     {previewText}
                   </p>
+                  {/* ← ADDED: shared-skills tag, only shown when there's genuine overlap */}
+                  {sharedSkills.length > 0 && (
+                    <p className="text-xs text-primary/70 mt-0.5">
+                      🔧 {sharedSkills.length} shared skill{sharedSkills.length > 1 ? "s" : ""}: {sharedSkills.slice(0, 3).join(", ")}
+                    </p>
+                  )}
                 </div>
                 {unread > 0 && <span className="badge badge-primary badge-sm">{unread}</span>}
               </Link>

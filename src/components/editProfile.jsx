@@ -24,7 +24,6 @@ const EditProfile = ({ user }) => {
   const { showToast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // ← ADDED: handle the redirect back from GitHub's OAuth flow
   useEffect(() => {
     const githubStatus = searchParams.get("github");
     if (githubStatus === "connected") {
@@ -71,7 +70,6 @@ const EditProfile = ({ user }) => {
           <div className="card-body max-h-[70vh] overflow-y-auto">
             <h2 className="card-title justify-center text-primary">Edit Profile</h2>
 
-            {/* ← ADDED: Developer Verification section */}
             <div className="border border-base-300 rounded-xl p-3 my-2 flex flex-col gap-2">
               <span className="text-sm font-semibold text-base-content/70">Developer Verification</span>
               <GithubConnectButton

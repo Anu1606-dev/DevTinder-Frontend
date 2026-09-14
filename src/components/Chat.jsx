@@ -15,7 +15,8 @@ const Chat = () => {
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [targetUser, setTargetUser] = useState(null); // ← ADDED
+  const [targetUser, setTargetUser] = useState(null);
+  const [isGeneratingIcebreaker, setIsGeneratingIcebreaker] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -31,7 +32,6 @@ const Chat = () => {
         }));
         setMessages(formatted);
 
-        // ← ADDED: pull the other participant's info for the avatar
         const other = data.participants?.find((p) => p._id !== userId);
         setTargetUser(other || null);
       } catch (err) {
@@ -78,16 +78,30 @@ const Chat = () => {
     setNewMessage("");
   };
 
+  const handleSuggestIcebreaker = async () => {
+    setIsGeneratingIcebreaker(true);
+    try {
+      const { data } = await axios.get(BASE_URL + "/matching/icebreaker/" + targetUserId, {
+        withCredentials: true,
+      });
+      setNewMessage(data.icebreaker);
+    } catch (err) {
+      console.error("Failed to generate icebreaker:", err);
+    } finally {
+      setIsGeneratingIcebreaker(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-[80vh] max-w-2xl mx-auto border border-base-300 rounded-lg mt-6">
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, index) => {
           const isOwn = msg.senderId === userId;
-          const avatarUrl = isOwn ? user.photoUrl : targetUser?.photoUrl; // ← ADDED
+          const avatarUrl = isOwn ? user.photoUrl : targetUser?.photoUrl;
 
           return (
             <div key={index} className={`chat ${isOwn ? "chat-end" : "chat-start"}`}>
-              <div className="chat-image avatar"> {/* ← ADDED */}
+              <div className="chat-image avatar">
                 <div className="w-8 h-8 rounded-full">
                   <img src={avatarUrl} alt={msg.firstName} />
                 </div>
@@ -99,6 +113,24 @@ const Chat = () => {
         })}
         <div ref={bottomRef} />
       </div>
+
+      {messages.length === 0 && (
+        <div className="px-4 pb-2">
+          <button
+            onClick={handleSuggestIcebreaker}
+            disabled={isGeneratingIcebreaker}
+            className="btn btn-outline btn-sm gap-2 w-full"
+          >
+            {isGeneratingIcebreaker ? (
+              <span className="loading loading-spinner loading-xs"></span>
+            ) : (
+              "✨"
+            )}
+            {isGeneratingIcebreaker ? "Thinking of something..." : "Suggest an icebreaker"}
+          </button>
+        </div>
+      )}
+
       <div className="flex p-4 border-t border-base-300 gap-2">
         <input
           type="text"

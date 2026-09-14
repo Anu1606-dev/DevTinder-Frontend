@@ -1,7 +1,7 @@
 const UserCard = ({ user, onIgnore, onInterested }) => {
   if (!user) return null;
 
-  const { _id, firstName, lastName, photoUrl, about, age, gender, skills } = user;
+  const { _id, firstName, lastName, photoUrl, about, age, gender, skills, matchScore } = user;
 
   const fullName = `${firstName || ""} ${lastName || ""}`.trim() || "Developer";
   const profileImage =
@@ -21,6 +21,14 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
         <div className="relative h-56 w-full">
           <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
+
+          {/* ← ADDED: match score badge, top-right corner */}
+          {typeof matchScore === "number" && matchScore > 0 && (
+            <div className="absolute top-3 right-3 badge badge-primary gap-1 shadow-lg">
+              🔧 {matchScore}% match
+            </div>
+          )}
+
           <div className="absolute bottom-0 left-0 p-4">
             <h2 className="text-2xl font-bold text-white drop-shadow">
               {fullName}
