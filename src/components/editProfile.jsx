@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import UserCard from "./userCard";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
@@ -23,13 +23,18 @@ const EditProfile = ({ user }) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
+  const hasHandledGithubRedirect = useRef(false); // ← ADDED
 
   useEffect(() => {
+    if (hasHandledGithubRedirect.current) return; // ← ADDED: blocks the Strict Mode double-fire
+
     const githubStatus = searchParams.get("github");
     if (githubStatus === "connected") {
+      hasHandledGithubRedirect.current = true; // ← ADDED
       showToast("success", "GitHub account connected successfully!");
       setSearchParams({}, { replace: true });
     } else if (githubStatus === "error") {
+      hasHandledGithubRedirect.current = true; // ← ADDED
       showToast("error", "Failed to connect GitHub account. Please try again.");
       setSearchParams({}, { replace: true });
     }
