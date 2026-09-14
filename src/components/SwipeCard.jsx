@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+const MAX_VISIBLE_SKILLS = 6; // ← ADDED
+
 const STACK_STYLES = [
   { scale: 1, y: 0, opacity: 1 },
   { scale: 0.95, y: 14, opacity: 0.85 },
@@ -27,7 +29,7 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
   const isFront = stackIndex === 0;
 
   if (!user) return null;
-  const { firstName, lastName, photoUrl, about, age, gender, skills } = user;
+  const { firstName, lastName, photoUrl, about, age, gender, skills, matchScore } = user; // ← ADDED matchScore
   const fullName = `${firstName || ""} ${lastName || ""}`.trim() || "Developer";
   const profileImage =
     photoUrl || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp";
@@ -37,13 +39,13 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
     ? skills.split(",").map((s) => s.trim()).filter(Boolean)
     : [];
 
-  // Records which way it should fly, then immediately tells Feed.jsx to
-  // remove it from Redux. AnimatePresence (in Feed.jsx) takes it from here —
-  // it keeps this card mounted just long enough to play the "exit" variant
-  // above, then removes it. No manual timing coordination needed.
+  // ← ADDED: cap displayed skills, same pattern as UserCard.jsx
+  const visibleSkills = skillList.slice(0, MAX_VISIBLE_SKILLS);
+  const remainingCount = skillList.length - MAX_VISIBLE_SKILLS;
+
   const triggerExit = (direction) => {
     setExitDirection(direction);
-    onSwipe(direction === 1 ? "interested" : "ignored", user._id);
+    onSwipe(direction === 1 ? "interested" : "ignore", user._id); // ← FIXED: "ignored" → "ignore"
   };
 
   const handleDragEnd = (e, info) => {
@@ -87,6 +89,14 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
             draggable={false}
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
+
+          {/* ← ADDED: placed bottom-right to avoid colliding with LIKE/NOPE overlays (top-left/top-right) */}
+          {typeof matchScore === "number" && matchScore > 0 && (
+            <div className="absolute bottom-16 right-3 badge badge-primary gap-1 shadow-lg">
+              🔧 {matchScore}% match
+            </div>
+          )}
+
           <div className="absolute bottom-0 left-0 p-4">
             <h2 className="text-2xl font-bold text-white drop-shadow">
               {fullName}
@@ -117,11 +127,15 @@ const SwipeCard = ({ user, stackIndex, onSwipe }) => {
           {about && <p className="text-sm text-base-content/70 line-clamp-2">{about}</p>}
           {skillList.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">
-              {skillList.map((skill, idx) => (
+              {visibleSkills.map((skill, idx) => (
                 <span key={idx} className="badge badge-primary badge-outline text-xs">
                   {skill}
                 </span>
               ))}
+              {/* ← ADDED */}
+              {remainingCount > 0 && (
+                <span className="badge badge-ghost text-xs">+{remainingCount} more skills</span>
+              )}
             </div>
           )}
 

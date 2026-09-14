@@ -1,3 +1,5 @@
+const MAX_VISIBLE_SKILLS = 6; 
+
 const UserCard = ({ user, onIgnore, onInterested }) => {
   if (!user) return null;
 
@@ -13,6 +15,10 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
     ? skills.split(",").map((s) => s.trim()).filter(Boolean)
     : [];
 
+  // ← ADDED: cap displayed skills, show remaining count instead of overflowing
+  const visibleSkills = skillList.slice(0, MAX_VISIBLE_SKILLS);
+  const remainingCount = skillList.length - MAX_VISIBLE_SKILLS;
+
   const showActions = onIgnore || onInterested;
 
   return (
@@ -22,7 +28,6 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
           <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent" />
 
-          {/* ← ADDED: match score badge, top-right corner */}
           {typeof matchScore === "number" && matchScore > 0 && (
             <div className="absolute top-3 right-3 badge badge-primary gap-1 shadow-lg">
               🔧 {matchScore}% match
@@ -52,11 +57,15 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
 
         {skillList.length > 0 ? (
           <div className="flex flex-wrap gap-2">
-            {skillList.map((skill, idx) => (
+            {visibleSkills.map((skill, idx) => (
               <span key={idx} className="badge badge-primary badge-outline text-xs">
                 {skill}
               </span>
             ))}
+            {/* ← ADDED */}
+            {remainingCount > 0 && (
+              <span className="badge badge-ghost text-xs">+{remainingCount} more skills</span>
+            )}
           </div>
         ) : (
           <span className="badge badge-ghost text-xs italic">No skills added yet</span>
