@@ -47,12 +47,12 @@ export const SocketProvider = ({ children }) => {
       dispatch(incrementUnread(fromUserId));
     });
 
-    // ← ADDED: live referral notification, two separate toasts as requested
-    newSocket.on("referralApplied", ({ newUserName, bonusDays }) => {
-      showToast("success", `🎉 ${newUserName} just joined using your referral link!`);
+    // ← ADDED: two staggered toasts when someone signs up using this user's referral link
+    newSocket.on("referralBonusApplied", ({ newUserFirstName, bonusDays, newReferralCount }) => {
+      showToast("success", `🎉 ${newUserFirstName} joined using your link! (${newReferralCount} friend${newReferralCount > 1 ? "s" : ""} total)`);
       setTimeout(() => {
-        showToast("success", `You've earned ${bonusDays} days of Premium access!`);
-      }, 1500); // staggered slightly so both toasts are readable, not stacked instantly
+        showToast("success", `You got ${bonusDays} days of Premium access!`);
+      }, 700);
     });
 
     return () => {
