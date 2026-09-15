@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom"; // ← CHANGED: added useSearchParams
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../utils/constants";
 import { useToast } from "../hooks/useToast";
@@ -32,6 +32,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const hideTimeoutRef = useRef(null);
   const { showToast } = useToast();
+  const [searchParams] = useSearchParams(); // ← ADDED
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,6 +79,28 @@ const Signup = () => {
       dispatch(addUser(loginRes.data));
       localStorage.setItem("loginTimestamp", Date.now().toString());
       localStorage.setItem("lastEmail", emailId);
+
+      // ← TEMPORARY DEBUG LOGGING — remove once this is confirmed working
+      const referralCode = searchParams.get("ref");
+      console.log("DEBUG: current URL is", window.location.href);
+      console.log("DEBUG: referralCode extracted is", referralCode);
+
+      if (referralCode) {
+        console.log("DEBUG: attempting to call /referral/apply now");
+        try {
+          const referralRes = await axios.post(
+            BASE_URL + "/referral/apply",
+            { code: referralCode },
+            { withCredentials: true }
+          );
+          console.log("DEBUG: referral apply SUCCEEDED:", referralRes.data);
+          showToast("success", referralRes.data.message);
+        } catch (referralErr) {
+          console.log("DEBUG: referral apply FAILED:", referralErr?.response?.status, referralErr?.response?.data || referralErr.message);
+        }
+      } else {
+        console.log("DEBUG: no referral code found, skipping apply call entirely");
+      }
 
       setTimeout(() => navigate("/"), 800);
     } catch (err) {
