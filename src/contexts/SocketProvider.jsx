@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { createSocketConnection } from "../utils/socket";
 import { incrementUnread, setUnreadCounts } from "../utils/chatSlice";
+import { useToast } from "../hooks/useToast"; // ← ADDED
 import { SocketContext } from "./SocketContext";
 
 export const SocketProvider = ({ children }) => {
@@ -11,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const socketRef = useRef(null);
   const [socket, setSocket] = useState(null);
+  const { showToast } = useToast(); // ← ADDED
 
   useEffect(() => {
     if (!user?._id) {
@@ -22,8 +24,6 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    // ← ADDED: pull real unread counts from the DB on every login/page load,
-    // since Redux state alone doesn't survive a refresh
     const hydrateUnreadCounts = async () => {
       try {
         const { data } = await axios.get(BASE_URL + "/chats", { withCredentials: true });
@@ -47,11 +47,19 @@ export const SocketProvider = ({ children }) => {
       dispatch(incrementUnread(fromUserId));
     });
 
+    // ← ADDED: live referral notification, two separate toasts as requested
+    newSocket.on("referralApplied", ({ newUserName, bonusDays }) => {
+      showToast("success", `🎉 ${newUserName} just joined using your referral link!`);
+      setTimeout(() => {
+        showToast("success", `You've earned ${bonusDays} days of Premium access!`);
+      }, 1500); // staggered slightly so both toasts are readable, not stacked instantly
+    });
+
     return () => {
       newSocket.disconnect();
       socketRef.current = null;
     };
-  }, [user?._id, dispatch]);
+  }, [user?._id, dispatch, showToast]);
 
   return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };
