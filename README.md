@@ -9,8 +9,6 @@ The React client for **DevTinder** — a Tinder-style networking platform where 
 
 ## Screenshots
 
-> Add screenshots below as you take them. Recommended shots for the frontend README specifically (things a recruiter can understand in 5 seconds, no explanation needed):
-
 - [ ] Feed page showing a swipe card with a **match % badge** and skills visible
 - [ ] Edit Profile page showing the GitHub "Verified" badge + repo/language stats
 - [ ] Chat page mid-conversation, showing avatars and the "Suggest an icebreaker" button
