@@ -16,6 +16,7 @@ import AdminReports from "./components/AdminReports"; // ← ADDED
 import { SocketProvider } from "./contexts/SocketProvider";
 import PremiumAnalytics from "./components/PremiumAnalytics";
 import ContactUs from "./components/ContactUs";
+import Search from "./components/Search";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="/admin/reports" element={<AdminReports />} /> 
               <Route path="/premium/analytics" element={<PremiumAnalytics />} />
               <Route path="/contact" element={<ContactUs />} />
+              <Route path="/search" element={<Search />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

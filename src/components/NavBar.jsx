@@ -85,6 +85,18 @@ const NavBar = () => {
             {user && (
                 <div className="flex-none flex items-center gap-4">
                     <Link
+                        to="/search"
+                        className={`btn btn-ghost btn-circle indicator ${theme === "synthwave" ? "" : "text-primary"}`}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6">
+                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </g>
+                        </svg>
+                    </Link>
+
+                    <Link
                         to="/chatlist"
                         className={`btn btn-ghost btn-circle indicator ${theme === "synthwave" ? "" : "text-primary"}`}
                     >
