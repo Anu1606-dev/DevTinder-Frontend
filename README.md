@@ -44,35 +44,35 @@ A fully responsive, real-time single-page application built on top of the Namast
 - Profile editing with a searchable, canonical skills picker (prevents free-text data inconsistencies)
 - Light/dark theme toggle with persisted preference
 
-### Developer Identity Verification
+### Developer Identity Verification 👩‍💻
 - One-click "Connect GitHub" flow via OAuth
 - Displays real public repo count and top languages once connected
 - Verified badge shown across Feed, Requests, and Connections cards
 
-### AI-Flavored Matching
+### AI-Flavored Matching 🤖
 - Live match-percentage badge on every profile card
 - "Suggest an icebreaker" button in new chats, referencing genuinely shared skills
 
-### Real-Time Chat
+### Real-Time Chat 🚀
 - WhatsApp-style chat list: latest message preview, "You: ..." sender attribution, unread counts backed by real database state
 - Live messaging via Socket.io — no refresh needed
 - Sender/receiver avatars inline with each message bubble
 - In-chat "Report" button for trust & safety
 
-### Monetization
+### Monetization 💸
 - Razorpay Checkout integration for Premium membership
 - Premium-only "Boost" button and a profile-view analytics dashboard
 
-### Growth & Engagement
+### Growth & Engagement 📈
 - Shareable referral link with live copy-to-clipboard
 - Real-time toast notifications the moment someone joins via your link
 - Gamified achievement badges based on connection milestones
 
-### Trust & Safety
+### Trust & Safety 🦺
 - Report modal accessible from any chat
 - Admin-only moderation dashboard (role-gated)
 
-### Polish
+### Polish ✨
 - Custom animated focus states across all form inputs
 - Fully responsive navbar, footer, and layouts down to small mobile viewports
 - Toast notifications and confirmation modals for key actions
