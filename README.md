@@ -38,7 +38,7 @@ A fully responsive, real-time single-page application built on top of the Namast
 
 ## Features
 
-### Core Experience
+### Core Experience 🔮
 - Swipeable developer discovery feed, ranked by skill-match percentage
 - Connection request flow (send, accept, reject)
 - Profile editing with a searchable, canonical skills picker (prevents free-text data inconsistencies)
