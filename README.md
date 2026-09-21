@@ -1,6 +1,6 @@
 # DevTinder — Frontend
 
-The React client for **DevTinder** — a Tinder-style networking platform where developers discover, connect, and chat with each other based on real skills, GitHub-verified identity, and AI-flavored matching.
+The React client for **DevTinder** — a Tinder-style networking platform where *Developers* discover, connect, and chat with each other based on real skills, GitHub-verified identity, and AI-flavored matching.
 ---
 
 🔗 **Live App:** [http://3.26.26.82](http://3.26.26.82)
