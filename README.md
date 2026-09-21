@@ -30,7 +30,7 @@ The React client for **DevTinder** — a Tinder-style networking platform where 
 
 ---
 
-## What This Is
+## What This Is DevTinder?
 
 A fully responsive, real-time single-page application built on top of the Namaste Node.js course architecture and extended well beyond it — with GitHub-verified profiles, skill-based match scoring, a WhatsApp-style chat experience, live payments with a real Premium tier, moderation tooling, and referral-driven growth mechanics.
 
